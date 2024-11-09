@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+// for easily adding,customizing or deleting items to the profile page
 
 enum SettingOptionsViewModel:Int,CaseIterable,Identifiable {
     case darkMode

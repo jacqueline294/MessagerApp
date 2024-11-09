@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// to build a reuseable profile image thus making it easy to impliment it on other views .
+
 enum ProfileImageSize{
     case xxSmall
     case xSmall

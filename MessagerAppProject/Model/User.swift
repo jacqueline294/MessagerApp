@@ -5,6 +5,8 @@
 //  Created by jacqueline Ngigi on 2024-11-07.
 //
 
+
+// user Data
 import Foundation
 struct User: Codable, Identifiable,Hashable {
     var id = NSUUID().uuidString

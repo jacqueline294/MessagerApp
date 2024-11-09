@@ -13,21 +13,23 @@ struct ChatMessageCell: View {
         HStack{
             if isFromCurrentUser {
                 Spacer()
-                Text("Hello World")
+                Text("Hello World wellcome! hope you feel at home here, its good to have you here")
                     .font(.subheadline)
                     .padding(12)
                     .background(Color(.systemBlue))
                     .foregroundColor(.white)
-                    .clipShape(Capsule())
+                    .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                    .frame(maxWidth: UIScreen.main.bounds.width/1.5,alignment:. trailing)// to constain the message to one side so it doesnt bleed to the other side
             }else{
                 HStack(alignment:.bottom, spacing:8){
                     CircularProfileImageView(user: User.MOCK_USER, size: .xxSmall)
-                    Text("hello to the world I am here")
+                    Text("hello to the world I am here, thank you for having me here")
                         .font(.subheadline)
                         .padding(12)
                         .background(Color(.systemGray5))
                         .foregroundColor(.black)
-                        .clipShape(Capsule())
+                        .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                        .frame(maxWidth: UIScreen.main.bounds.width/1.75,alignment: .leading)
                     
                     Spacer()
                 }
