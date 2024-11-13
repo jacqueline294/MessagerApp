@@ -11,6 +11,8 @@ struct InboxView: View {
     
     @State private var showNewMessageView = false
     @StateObject var viewmodel = InboxViewModel()
+    @State private var selectedUser :User?
+    @State private var showChat = false
     
     private var user: User? {
         return viewmodel.currentUser
@@ -28,23 +30,26 @@ struct InboxView: View {
                 .listStyle(PlainListStyle())
                 .frame(height: UIScreen.main.bounds.height - 120)
             }
+            .onChange(of: selectedUser, perform: { newValue in
+                showChat = newValue != nil
+            })
             .navigationDestination(for: User.self, destination: { user in
                 ProfileView(user: user)
             })
-            .fullScreenCover(isPresented: $showNewMessageView, content:{
-                NewMessageView()
+            navigationDestination(isPresented: $showChat, destination: {
+                if let user = selectedUser {
+                    ChatView(user: user)
+                }
             })
-            
+            .fullScreenCover(isPresented: $showNewMessageView, content:{
+                NewMessageView(selectedUser: $selectedUser)
+            })
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading){
-                    HStack{
-                        NavigationLink(value: user) {
-                            CircularProfileImageView(user: user, size: .xSmall)
+                    NavigationLink(value: user) {
+                            CircularProfileImageView(user: user, size:.xSmall)
                         }
-                        Text("Chats")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button{

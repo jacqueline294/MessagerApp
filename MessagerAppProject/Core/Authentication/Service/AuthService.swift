@@ -10,7 +10,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-// AuthService will be used to  house the code to communicate with firebase  like login a user.
+// AuthService will be used to  house the code to communicate with firebase to authenicate a user i.e login a user, create a user or logout a user.
 
 class AuthService {
     // keep track weather the user is logged in or not
@@ -21,16 +21,16 @@ class AuthService {
     
     init () {
         self.userSession = Auth.auth().currentUser
-        Task {try await UserService.shared.fetchCurrentUser()
+        loadCurrentUserData()
             
         }
-    }
+    
     @MainActor
     func login(withEmail email: String, password: String) async throws {
         do{
             let result = try await Auth.auth().signIn(withEmail: email , password: password)
             self.userSession = result.user
-            
+            loadCurrentUserData()
         }catch{
             print("DEBUG:Fail to sign in user with error: \(error.localizedDescription)")
             
@@ -43,6 +43,7 @@ class AuthService {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             self.userSession = result.user
             try await self.uploadUserData(email: email, fullname: fullname, id: result.user.uid)
+            loadCurrentUserData()
         }catch{
             print("DEBUG:Fail to creat user with error: \(error.localizedDescription)")
             
@@ -52,6 +53,7 @@ class AuthService {
         do{
             try Auth.auth().signOut() // signout from the backend
             self.userSession = nil// updates the routing logic
+            UserService.shared.currentUser = nil
         }catch{
             print("DEBUG: Failed to sign out with error : \(error.localizedDescription)")
         }
@@ -61,7 +63,11 @@ class AuthService {
         guard let encodedUser = try? Firestore.Encoder().encode(user)else {return}
         try await Firestore.firestore().collection("users").document(id).setData(encodedUser)
     }
-    
+    private func loadCurrentUserData (){
+        Task {try await UserService.shared.fetchCurrentUser()}
+    }
 }
+    
+
 
 
