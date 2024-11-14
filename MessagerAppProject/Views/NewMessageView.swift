@@ -10,11 +10,11 @@ import SwiftUI
 struct NewMessageView: View {
     @State  private var searchText = ""
     @StateObject private var viewModel = NewMessageViewModel()
-    @Binding var selectedUser:User?
-    @Environment(\..dismiss)var dismiss
+    @Binding var selectedUser: User?
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationStack{
+        
             ScrollView{
                 TextField("To",text:$searchText)
                     .frame(height: 44)
@@ -46,7 +46,7 @@ struct NewMessageView: View {
                 }
             }
             .navigationBarTitle("New Message")
-            .navigationBarTitleDisplayMode(.inline)
+            //.navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading){
                     Button("Cancel"){
@@ -60,7 +60,7 @@ struct NewMessageView: View {
             
         }
     }
-}
+
 
 
 #Preview {

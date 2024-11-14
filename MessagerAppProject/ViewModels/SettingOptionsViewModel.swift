@@ -32,7 +32,7 @@ enum SettingOptionsViewModel:Int,CaseIterable,Identifiable {
      var imageName:String {
         switch self {
         case .darkMode:
-            return "moon.circle.fil"
+            return "circle.fil"
         case .activeStatus:
             return "message.badge.circle.fill"
         case .accessibility:

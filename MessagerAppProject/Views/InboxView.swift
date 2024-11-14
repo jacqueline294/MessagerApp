@@ -11,7 +11,7 @@ struct InboxView: View {
     
     @State private var showNewMessageView = false
     @StateObject var viewmodel = InboxViewModel()
-    @State private var selectedUser :User?
+    @State private var selectedUser: User?
     @State private var showChat = false
     
     private var user: User? {
@@ -19,7 +19,7 @@ struct InboxView: View {
     }
     
     var body: some View {
-        NavigationStack{
+        
             ScrollView{
                 ActiveNowView()
                 List{
@@ -30,9 +30,12 @@ struct InboxView: View {
                 .listStyle(PlainListStyle())
                 .frame(height: UIScreen.main.bounds.height - 120)
             }
-            .onChange(of: selectedUser, perform: { newValue in
-                showChat = newValue != nil
-            })
+            .onAppear {
+            if selectedUser != nil {
+            showChat = true
+               }
+            }
+            
             .navigationDestination(for: User.self, destination: { user in
                 ProfileView(user: user)
             })
@@ -44,16 +47,16 @@ struct InboxView: View {
             .fullScreenCover(isPresented: $showNewMessageView, content:{
                 NewMessageView(selectedUser: $selectedUser)
             })
-            .navigationBarTitleDisplayMode(.inline)
+            //.navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading){
                     NavigationLink(value: user) {
-                            CircularProfileImageView(user: user, size:.xSmall)
-                        }
+                        CircularProfileImageView(user: user, size:.xSmall)
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button{
-                    showNewMessageView.toggle()
+                        showNewMessageView.toggle()
                         
                     } label: {
                         Image(systemName: "square.and.pencil.circle.fill")
@@ -61,13 +64,14 @@ struct InboxView: View {
                             .frame(width:32 , height: 32)
                             .foregroundStyle(.black, Color(.systemGray5))
                     }
-                        
-                   
+                    
+                    
                 }
             }
+            
         }
     }
-}
+
 
 #Preview {
     InboxView()

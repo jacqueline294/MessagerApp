@@ -50,7 +50,13 @@ struct ProfileView: View {
                 }
                 Section{
                     Button ("Logout"){
-                        AuthService.shared.signOut()
+                        Task{
+                            do{
+                               try await AuthService.shared.signOut()
+                            }catch{
+                                print ("Error signing out: \(error.localizedDescription)")
+                            }
+                        }
                     }
                     
                     Button ("Delet Account"){

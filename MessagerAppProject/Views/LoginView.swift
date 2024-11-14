@@ -11,7 +11,7 @@ struct LoginView: View {
     @StateObject var viewModel = LoginViewModel()
     
     var body: some View {
-        NavigationStack{
+        
             VStack{
                 Text("Welcome to Chat Link")
                     .font(.title)
@@ -100,7 +100,6 @@ struct LoginView: View {
                 }
                 
             }
-        }
     }
 }
 
