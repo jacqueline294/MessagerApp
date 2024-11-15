@@ -17,12 +17,14 @@ struct Message: Identifiable,Codable,Hashable {
     let messageText: String
     let timeStamp: Timestamp
     
-    var use:User?
-    var id: String { return messageId ?? NSUUID().uuidString
+    var user:User?
+     
+    var id: String { return messageId ?? UUID().uuidString
     }
     var chatPartnerId: String{
         return fromId == Auth.auth().currentUser?.uid ? toId : fromId // to find out who we are chatting with
     }
+    // checks if message is from current user
     var  isFromCurrentUser: Bool{
         return fromId == Auth.auth().currentUser?.uid
     }

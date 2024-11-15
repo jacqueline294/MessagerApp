@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 struct ChatMessageCell: View {
-    let isFromCurrentUser: Bool
+    
+    let message: Message
+    
     var body: some View {
         HStack{
-            if isFromCurrentUser {
+            if message.isFromCurrentUser {
                 Spacer()
-                Text("Hello World wellcome! hope you feel at home here, its good to have you here")
+                Text(message.messageText)
                     .font(.subheadline)
                     .padding(12)
                     .background(Color(.systemBlue))
                     .foregroundColor(.white)
-                    .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                    .clipShape(ChatBubble(isFromCurrentUser: message.isFromCurrentUser))
                     .frame(maxWidth: UIScreen.main.bounds.width/1.5,alignment:. trailing)// to constain the message to one side so it doesnt bleed to the other side
             }else{
                 HStack(alignment:.bottom, spacing:8){
@@ -28,7 +31,7 @@ struct ChatMessageCell: View {
                         .padding(12)
                         .background(Color(.systemGray5))
                         .foregroundColor(.black)
-                        .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                        .clipShape(ChatBubble(isFromCurrentUser: message.isFromCurrentUser))
                         .frame(maxWidth: UIScreen.main.bounds.width/1.75,alignment: .leading)
                     
                     Spacer()
@@ -40,5 +43,12 @@ struct ChatMessageCell: View {
 }
 
 #Preview {
-    ChatMessageCell(isFromCurrentUser: false)
+    ChatMessageCell( message: Message(
+        messageId: "1",
+        fromId: "currentUserId",
+        toId: "recipientId",
+        messageText: "Hello to the world, I am here, thank you for having me here",
+        timeStamp: Timestamp()
+        
+    ))
 }
